@@ -3,7 +3,6 @@ anyio==4.6.2.post1
 black==24.10.0
 click==8.1.7
 colorama==0.4.6
-customtkinter==5.2.2
 darkdetect==0.8.0
 fastapi==0.115.5
 h11==0.14.0
