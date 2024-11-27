@@ -5,6 +5,7 @@ click==8.1.7
 colorama==0.4.6
 darkdetect==0.8.0
 fastapi==0.115.5
+gunicorn==23.0.0
 h11==0.14.0
 idna==3.10
 mypy-extensions==1.0.0
