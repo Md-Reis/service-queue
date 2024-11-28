@@ -55,26 +55,30 @@ def adiciona_cliente(cliente: Cliente):
     if not fila_atendimento:
         fila_atendimento.append(novo_cliente)
     else:
-        if cliente.tipo_atendimento == "P":
-            index = [index for index, tipo in enumerate(fila_atendimento) if tipo["tipo_atendimento"] == "N" and fila_atendimento[index]["atendido"] != True]
-            if index:
-                fila_atendimento.insert(index[0], novo_cliente)
-                pos = index[0]
+        index = [index for index, atend in enumerate(fila_atendimento) if atend["atendido"] == False]
+        if not index:
+            fila_atendimento.insert(1, novo_cliente)
         else:
-            if not fila_atendimento or len(fila_atendimento) == 1:
-                pos = len(fila_atendimento)
-                fila_atendimento.append(novo_cliente)
-            else:
-                index = [index for index, atendido in enumerate(fila_atendimento) if atendido["atendido"] and index != 0]
+            if cliente.tipo_atendimento == "P":
+                index = [index for index, tipo in enumerate(fila_atendimento) if tipo["tipo_atendimento"] == "N" and fila_atendimento[index]["atendido"] != True]
                 if index:
                     fila_atendimento.insert(index[0], novo_cliente)
                     pos = index[0]
-                else:
+            else:
+                if not fila_atendimento or len(fila_atendimento) == 1:
                     pos = len(fila_atendimento)
-                    fila_atendimento.append(novo_cliente) 
-                    
-    return {"pos": pos, "id_cliente": id, "nome": cliente.nome, "tipo_atendimento": cliente.tipo_atendimento,
-            "atendimento": False, "data_entrada": data_entrada}
+                    fila_atendimento.append(novo_cliente)
+                else:
+                    index = [index for index, atendido in enumerate(fila_atendimento) if atendido["atendido"] and index != 0]
+                    if index:
+                        fila_atendimento.insert(index[0], novo_cliente)
+                        pos = index[0]
+                    else:
+                        pos = len(fila_atendimento)
+                        fila_atendimento.append(novo_cliente) 
+                        
+        return {"pos": pos, "id_cliente": id, "nome": cliente.nome, "tipo_atendimento": cliente.tipo_atendimento,
+                "atendimento": False, "data_entrada": data_entrada}
 
 @app.put("/fila")
 def atualiza_fila_atendimento(): # Atualiza a fila de atendimento
