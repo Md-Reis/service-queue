@@ -77,8 +77,8 @@ def adiciona_cliente(cliente: Cliente):
                         pos = len(fila_atendimento)
                         fila_atendimento.append(novo_cliente) 
                         
-        return {"pos": pos, "id_cliente": id, "nome": cliente.nome, "tipo_atendimento": cliente.tipo_atendimento,
-                "atendimento": False, "data_entrada": data_entrada}
+    return {"pos": pos, "id_cliente": id, "nome": cliente.nome, "tipo_atendimento": cliente.tipo_atendimento,
+            "atendimento": False, "data_entrada": data_entrada}
 
 @app.put("/fila")
 def atualiza_fila_atendimento(): # Atualiza a fila de atendimento
