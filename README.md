@@ -14,3 +14,8 @@ API desenvolvida através do fastAPI conteudo os seguintes recursos
 @app.delete("/fila/pos/{pos}") - Remove um cliente da fila, conforme a posição informada
 
 @app.delete("/fila/pos/{id}") - Remove um cliente da fila, conforme o seu numero de identificação
+
+O repositorio tambem conta com uma base teste (painel.py) que simula um atendimento real utilizando a API para que possa ser testado.
+O mesmo simula um banco de dados (em memoria) hospedado em um servido através do Uvicorn.
+
+Para testar a API, baixo os arquivos, instale as bibliotecas de requirements.txt e execute o arquivo "painel.py"
