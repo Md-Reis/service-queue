@@ -223,7 +223,6 @@ class Controle():
         self.listaClientesCompleto.tag_configure('evenrow', background="gray95")
         
         for dic in self.lista:
-            #print(dic)
             pos = self.lista.index(dic)
             if dic['atendimento'] == False:
                 status = 'Aguardando'
@@ -296,7 +295,6 @@ class Controle():
                             index['atendimento'] = True
                             break
         else:
-            print(resp.json())
             for clientes in self.todos_cliente:
                 if clientes['pos'] >= resp.json()['pos']:
                     clientes['pos'] += 1
