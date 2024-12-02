@@ -174,13 +174,13 @@ class Controle():
         self.removeID.place(x=15, y=200)
         
         self.removeID_entry = ctk.CTkEntry(self.frame_controle, placeholder_text= "ID", width=30)
-        self.removeID_entry.place(x=110, y=200)
+        self.removeID_entry.place(x=110, y=204)
         
         self.removePOS = ctk.CTkButton(self.frame_controle, text= "Remover POS:", fg_color='#483D8B', hover_color='#836FFF', width=70, height=35, command=self.remove_pos)
         self.removePOS.place(x=250, y=200)
         
         self.removePOS_entry = ctk.CTkEntry(self.frame_controle, placeholder_text= "POS", width=40)
-        self.removePOS_entry.place(x=350, y=200)
+        self.removePOS_entry.place(x=350, y=204)
     def lista_cliente_completa(self):
         def treeview_sort_column(tv, col, reverse):
             l = [(tv.set(k, col), k) for k in tv.get_children('')]
@@ -257,7 +257,7 @@ class Controle():
                 messagebox.showinfo('Removido',f"{msg['mensagem']}")
                 self.removeID_entry.destroy()
                 self.removeID_entry = ctk.CTkEntry(self.frame_controle, placeholder_text= "ID", width=30)
-                self.removeID_entry.place(x=110, y=200)
+                self.removeID_entry.place(x=110, y=204)
                 
                 self.todos_cliente = [cliente for cliente in self.todos_cliente if str(cliente['id_cliente']) != str(id_removido)]
                 self.mostra_clientes_completo()
@@ -277,7 +277,7 @@ class Controle():
                 messagebox.showinfo('Removido',f"{msg['mensagem']}")
                 self.removePOS_entry.destroy()
                 self.removePOS_entry = ctk.CTkEntry(self.frame_controle, placeholder_text= "POS", width=40)
-                self.removePOS_entry.place(x=350, y=200)
+                self.removePOS_entry.place(x=350, y=204)
 
                 self.todos_cliente = [cliente for cliente in self.todos_cliente if str(cliente['pos']) != str(pos_removido)]
                 
