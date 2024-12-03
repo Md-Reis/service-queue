@@ -39,6 +39,7 @@ def obter_cliente(id: int):
 
 @app.post("/fila") # Adiciona um novo cliente a fila e organiza por prioridade
 def adiciona_cliente(cliente: Cliente):
+    pos: int = 0
     id = gera_id_automatico()
     data_entrada = obter_data_entrada()
     novo_cliente = {
