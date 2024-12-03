@@ -194,10 +194,9 @@ class Controle():
             tv.heading(col, text=col, command=lambda _col=col: \
                         treeview_sort_column(tv, _col, not reverse))
 
-        columns = ('POS', 'ID', 'NOME','DATA', 'TIPO','STATUS')
+        columns = ('ID', 'NOME','DATA', 'TIPO','STATUS')
         self.listaClientesCompleto = ttk.Treeview(self.frame_controle, height= 3, columns=columns, show = 'headings')
 
-        self.listaClientesCompleto.column('POS', width=30, anchor='center')
         self.listaClientesCompleto.column('ID', width=30, anchor='center')
         self.listaClientesCompleto.column('NOME', width=80, anchor='w')
         self.listaClientesCompleto.column('DATA', width=90, anchor='center')
@@ -223,7 +222,6 @@ class Controle():
         self.listaClientesCompleto.tag_configure('evenrow', background="gray95")
         
         for dic in self.lista:
-            pos = self.lista.index(dic)
             if dic['atendimento'] == False:
                 status = 'Aguardando'
             else:
@@ -238,9 +236,9 @@ class Controle():
             except:
                 pass
             if count % 2 == 0:
-                self.listaClientesCompleto.insert('',END, values=(pos,dic['id_cliente'],dic['nome'],dic['data_entrada'],f"({dic['tipo_atendimento']})",status), tags = ('evenrow'))
+                self.listaClientesCompleto.insert('',END, values=(dic['id_cliente'],dic['nome'],dic['data_entrada'],f"({dic['tipo_atendimento']})",status), tags = ('evenrow'))
             else:
-                self.listaClientesCompleto.insert('',END, values=(pos,dic['id_cliente'],dic['nome'],dic['data_entrada'],f"({dic['tipo_atendimento']})",status), tags = ('oddrow'))
+                self.listaClientesCompleto.insert('',END, values=(dic['id_cliente'],dic['nome'],dic['data_entrada'],f"({dic['tipo_atendimento']})",status), tags = ('oddrow'))
             count +=1
     def remove_id(self):
         if self.removeID_entry == "":
@@ -268,7 +266,9 @@ class Controle():
         else:
             pos_removido = self.removePOS_entry.get()
             
-            resp = requests.delete(f'{self.data}/fila/id/{pos_removido}')
+            find_cliente = requests.get(f'{self.data}/fila/{pos_removido}')
+
+            resp = requests.delete(f'{self.data}/fila/pos/{pos_removido}')
             if resp.status_code == 404:
                 messagebox.showinfo("404 Not Found","A posição do cliente informado nao foi encontrado")
                 print(resp)
@@ -278,8 +278,7 @@ class Controle():
                 self.removePOS_entry.destroy()
                 self.removePOS_entry = ctk.CTkEntry(self.frame_controle, placeholder_text= "POS", width=40)
                 self.removePOS_entry.place(x=350, y=204)
-
-                self.todos_cliente = [cliente for cliente in self.todos_cliente if str(cliente['pos']) != str(pos_removido)]
+                self.todos_cliente = [cliente for cliente in self.todos_cliente if str(cliente['nome']) != str(find_cliente.json()['nome'][:-3])]
                 
                 self.mostra_clientes_completo()
                 Atendente.update(self)
@@ -288,18 +287,14 @@ class Controle():
             id = resp['id_cliente']
             self.status_atendido = True
             for item in self.listaClientesCompleto.get_children():
-                item_id = self.listaClientesCompleto.item(item)['values'][1]
+                item_id = self.listaClientesCompleto.item(item)['values'][0]
                 if item_id == id:
                     for index in self.todos_cliente:
                         if index['id_cliente'] == id:
                             index['atendimento'] = True
-                            break
+                    break
         else:
-            for clientes in self.todos_cliente:
-                if clientes['pos'] >= resp.json()['pos']:
-                    clientes['pos'] += 1
-                
-            self.todos_cliente.insert(resp.json()['pos'], resp.json())
+            self.todos_cliente.append(resp.json())
         self.mostra_clientes_completo()
     def __init__(self):
         self.tela_controle()
